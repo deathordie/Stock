@@ -217,7 +217,7 @@ function editsupplier($strid,$strsuppliername){
 }
 
 function viewproduct(){
-    $str = "select * from product a,brand b,model c where a.model_id = c.model_id and c.brand_id = b.brand_id order by a.prod_id asc";
+    $str = "select * from product a,brand b,model c,category d where a.category_id = d.category_id and a.model_id = c.model_id and c.brand_id = b.brand_id order by a.prod_id asc";
     $query = mysql_query($str)or die (mysql_error());
     $result = array();
     while($data = mysql_fetch_array($query)){
@@ -233,6 +233,18 @@ function addproduct($strsupplierid,$strmodelid,$strcategoryid,$strwarranty,$warr
     echo "<script lang='javascript'>alert('บันทึกข้อมูลเรียบร้อยแล้ว');</script>";
     echo "<script type='text/javascript'>window.location.href = 'index.php?page=manageproduct';</script>";
     mysql_close();
+}
+
+function selecteditproduct($strid){
+    $str = "select * from product a,brand b, model c where a.model_id = c.model_id and c.brand_id = b.brand_id order by a.prod_id ";
+    $query = mysql_query($str)or die (mysql_error());
+    $result = array();
+    while($data = mysql_fetch_array($query)){
+           array_push($result,$data);
+           }
+	unset($_SESSION['tmp']);	   
+	return $result;
+        mysql_close();
 }
 
 function login($strusr,$strpass){
