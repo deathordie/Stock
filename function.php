@@ -236,7 +236,7 @@ function addproduct($strsupplierid,$strmodelid,$strcategoryid,$strwarranty,$warr
 }
 
 function selecteditproduct($strid){
-    $str = "select * from product a,brand b, model c where a.model_id = c.model_id and c.brand_id = b.brand_id order by a.prod_id ";
+    $str = "select * from product a,brand b, model c ,supplier d where a.model_id = c.model_id and c.brand_id = b.brand_id and a.supplier_id = d.supplier_id and a.prod_id = ".$strid." order by a.prod_id ";
     $query = mysql_query($str)or die (mysql_error());
     $result = array();
     while($data = mysql_fetch_array($query)){
@@ -245,6 +245,14 @@ function selecteditproduct($strid){
 	unset($_SESSION['tmp']);	   
 	return $result;
         mysql_close();
+}
+
+function editproduct($strid,$strsupplierid,$strmodelid,$strcategoryid,$strwarranty,$warrantytype){
+    $str = "update product set supplier_id = '".$strsupplierid."', model_id = '".$strmodelid."', category_id = '".$strcategoryid."' , warranty = '".$strwarranty."', warrantytype = '".$warrantytype."' where prod_id = '".$strid."' ";
+    $query = mysql_query($str)or die (mysql_error());
+    echo "<script lang='javascript'>alert('แก้ไขข้อมูลเรียบร้อยแล้ว');</script>";
+    echo "<script type='text/javascript'>window.location.href = 'index.php?page=manageproduct';</script>";
+    mysql_close();
 }
 
 function login($strusr,$strpass){

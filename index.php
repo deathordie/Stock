@@ -25,7 +25,7 @@
                 <div class="col-sm-2">
                     <ul class="nav nav-pills nav-stacked">
                         <?php 
-                            if($_GET['page'] == 'home')
+                            if($_GET['page'] == 'home' || !isset($_GET['page']))
                                 echo "<li class='active'>";
                             else
                                 echo "<li>";

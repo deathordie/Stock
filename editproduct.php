@@ -1,7 +1,7 @@
 <?php
-    if(isset($_GET['page']) && $_GET['brandid'] != '' && $_GET['modelname'] != '' && $_GET['id'] != ''){
-        editmodel($_GET['id'],$_GET['brandid'],$_GET['modelname']);
-        echo "OK";
+    if(isset($_GET['page']) && $_GET['warranty'] != '' && $_GET['modelid'] != '' && $_GET['id'] != ''){
+        editproduct($_GET['id'],$_GET['supplierid'],$_GET['modelid'],$_GET['categoryid'],$_GET['warranty'],$_GET['warrantytype']);
+        
 	}
 ?>
 <!DOCTYPE html>
@@ -34,7 +34,7 @@
 							echo "<option value=".$data1['supplier_id']." >".$data1['supplier_name']."</option>";
                    								}
 					echo "</select></td></tr>";
-                    echo "<tr><td><label>ยี่ห้อ</label></td><td><select name='brandid'>";
+                    echo "<tr><td><label>ยี่ห้อ</label></td><td><select name='brandid' onchange=window.location='index.php?page=แก้ไขข้อมูลสินค้า&brandid='+this.value>";
                                         $result1 = viewbrand();
 					foreach ($result1 as $data1 ) {
 						if($data['brand_id'] == $data1['brand_id'])
@@ -44,6 +44,16 @@
                    								}
                                         echo "</select></td></tr>"; 
                                         echo "<tr><td><label>รุ่น</label></td><td><select name='modelid'>";
+                                        if(isset($_GET['brandid'])){
+                                            $result1 = viewmodelonproduct($_GET['brandid']);
+                                            foreach ($result1 as $data1 ){
+						echo "<option value=".$data1['model_id']." >".$data1['model_name']."</option>";
+                                            
+                                                
+                                            }	
+                                        echo "</select></td></tr>";
+                                        }
+                                        else{
                                         $result1 = viewmodel();
 					foreach ($result1 as $data1 ) {
 						if($data['model_id'] == $data1['model_id'])
@@ -51,6 +61,18 @@
 						else
 							echo "<option value=".$data1['model_id']." >".$data1['model_name']."</option>";
                    								}
+                                        }
+                                        echo "</select></td></tr>";
+                                        echo "<tr><td><label>หมวดหมู่</label></td><td><select name='categoryid'>";
+                                            $result1 = viewcategory();
+                                            foreach ($result1 as $data1 ){
+						if($data['category_id'] == $data1['category_id'])
+							echo "<option value=".$data1['category_id']." selected>".$data1['category_name']."</option>";
+						else
+							echo "<option value=".$data1['category_id']." >".$data1['category_name']."</option>";
+                                            
+                                                
+                                            }	
                                         echo "</select></td></tr>";
                                         echo "<tr><td><label>ระยะเวลาประกัน</label></td><td><input type ='text' name='warranty' value='".$data['warranty']."'></td></tr>";
                                         echo "<tr><td><label>ประเภทประกัน</label></td><td><select name='warrantytype'>";
@@ -78,7 +100,7 @@
 			?>
                            
             </table>
-            <input class="btn" type="submit" name="page" value="แก้ไขข้อมูลรุ่น">
+            <input class="btn" type="submit" name="page" value="แก้ไขข้อมูลสินค้า">
             </form>
             
         </div>
