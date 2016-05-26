@@ -22,7 +22,7 @@
             <table class="table">
 			<?php
                             
-				$result = selecteditmodel($_SESSION['tmp']);
+				$result = select("select * from model where model_id = ".$_SESSION['tmp']."");
 				foreach ($result as $data ) {
 					echo "<tr><td><label>รหัสรุ่น</label></td><td><input type='text' name='id' value='".$data['model_id']."' readonly /></td></tr>";
 					echo "<tr><td><label>ชื่อยี่ห้อ</label></td><td><select name='brandid'>";

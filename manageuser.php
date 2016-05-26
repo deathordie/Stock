@@ -16,7 +16,7 @@
             <table class="table">
                 <tr><td>ลำดับ</td><td>ชื่อ</td><td>นามสกุล</td><td>ชื่อผู้ใช้</td><td>เครื่องมือ</td></tr>
                 <?php
-                $result = viewuser();
+                $result = view("select * from employee order by emp_id asc");
 				$i =1;
                 foreach ($result as $data ) {
                     echo "<tr><td>".$i."</td><td>".$data['emp_fname']."</td><td>".$data['emp_lname']."</td><td>".$data['emp_username']."</td><td><a href='index.php?page=แก้ไขข้อมูลพนักงาน&id=".$data['emp_id']."   '>แก้ไข</a></td></tr>";

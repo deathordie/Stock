@@ -81,7 +81,7 @@
                             <a href="index.php?page=manageproduct">จัดการข้อมูลสินค้า</a>
                         </li>
                         <?php 
-                            if($_GET['page'] == 'order' || $_GET['page'] == 'สั่งซื้อสินค้า' || $_GET['page'] == 'บันทึกข้อมูลพนักงาน' || $_GET['page'] == 'แก้ไขข้อมูลพนักงาน')
+                            if($_GET['page'] == 'order' || $_GET['page'] == 'สั่งซื้อสินค้า' || $_GET['page'] == '' || $_GET['page'] == '')
                                 echo "<li class='active'>";
                             else
                                 echo "<li>";

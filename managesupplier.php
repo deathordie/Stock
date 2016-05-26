@@ -16,7 +16,7 @@
             <table class="table">
                 <tr><td>ลำดับ</td><td>รหัสผู้จัดจำหน่าย</td><td>ชื่อผู้จัดจำหน่าย</td><td>เครื่องมือ</td></tr>
                 <?php
-                $result = viewsupplier();
+                $result = view("select * from supplier order by supplier_id asc");
 				$i =1;
                 foreach ($result as $data ) {
                     echo "<tr><td>".$i."</td><td>".$data['supplier_id']."</td><td>".$data['supplier_name']."</td><td><a href='index.php?page=แก้ไขข้อมูลผู้จัดจำหน่าย&id=".$data['supplier_id']."   '>แก้ไข</a></td></tr>";

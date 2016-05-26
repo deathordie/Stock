@@ -21,7 +21,7 @@
             <table class="table">
 			<?php
                             
-				$result = selecteditsupplier($_SESSION['tmp']);
+				$result = select("select * from supplier where supplier_id = ".$_SESSION['tmp']."");
 				foreach ($result as $data ) {
                                     echo "<tr><td><label>รหัสผู้จัดจำหน่าย</label></td><td><input type='text' name='id' value='".$data['supplier_id']."' readonly /></td></tr>";
                                     echo "<tr><td><label>ชื่อผู้จัดจำหน่าย</label></td><td><input type='text' name='suppliername' value='".$data['supplier_name']."'></td></tr>";

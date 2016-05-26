@@ -21,7 +21,7 @@
             <table class="table">
 			<?php
                             
-				$result = selecteditbrand($_SESSION['tmp']);
+				$result = select("select * from brand where brand_id = ".$_SESSION['tmp']." ");
 				foreach ($result as $data ) {
                                     echo "<tr><td><label>รหัสยี่ห้อ</label></td><td><input type='text' name='id' value='".$data['brand_id']."' readonly /></td></tr>";
                                     echo "<tr><td><label>ชื่อยี่ห้อ</label></td><td><input type='text' name='brandname' value='".$data['brand_name']."'></td></tr>";

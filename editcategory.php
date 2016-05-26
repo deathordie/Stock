@@ -21,7 +21,7 @@
             <table class="table">
 			<?php
                             
-				$result = selecteditcategory($_SESSION['tmp']);
+				$result = select("select * from category where category_id = ".$strid."");
 				foreach ($result as $data ) {
                                     echo "<tr><td><label>รหัสหมดหมู่สินค้า</label></td><td><input type='text' name='id' value='".$data['category_id']."' readonly /></td></tr>";
                                     echo "<tr><td><label>ชื่อหมวดหมู่สินค้า</label></td><td><input type='text' name='categoryname' value='".$data['category_name']."'></td></tr>";

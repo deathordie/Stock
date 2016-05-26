@@ -21,7 +21,7 @@
             <table class="table">
 			<?php
                             
-				$result = selectedituser($_SESSION['tmp']);
+				$result = select("select * from employee where emp_id = ".$_SESSION['tmp']."");
 				foreach ($result as $data ) {
                                     echo "<tr><td><label>รหัสพนักงาน</label></td><td><input type='text' name='id' value='".$data['emp_id']."' readonly /></td></tr>";
                                     echo "<tr><td><label>ชื่อ</label></td><td><input type='text' name='fname' value='".$data['emp_fname']."'></td></tr>";

@@ -16,7 +16,7 @@
             <table class="table">
                 <tr><td>ลำดับ</td><td>ชื่อหมวดหมู่สินค้า</td><td>เครื่องมือ</td></tr>
                 <?php
-                $result = viewcategory();
+                $result = view("select * from category order by category_id asc");
 				$i =1;
                 foreach ($result as $data ) {
                     echo "<tr><td>".$i."</td><td>".$data['category_name']."</td><td><a href='index.php?page=แก้ไขข้อมูลหมวดหมู่สินค้า&id=".$data['category_id']."   '>แก้ไข</a></td></tr>";
