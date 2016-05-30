@@ -1,10 +1,16 @@
 <?php
-    if(isset($_GET['supplierid']))
+    if($_GET['page'] == "เลือกสินค้า" && $_GET['prodid'] != '' && $_GET['amount'] != '' ){
+        echo "add product";
+        order($_GET['prodid'], $_GET['amount']);
+    }
+    else if(isset($_GET['supplierid']))
     $_SESSION['supplierid'] = $_GET['supplierid'];
     else if(isset($_GET['brandid']))
     $_SESSION['brandid'] = $_GET['brandid'];
-    else if(isset($_GET['modelid']))
-    $_SESSION['modelid'] = $_GET['modelid'];
+    else if(isset($_GET['prodid']))
+    $_SESSION['prodid'] = $_GET['prodid'];
+    
+    showorder();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +30,7 @@
             <table class="table">
                 <tr><td>ผู้จัดจำหน่าย</td><td><select name="supplierid" onchange="window.location='index.php?page=order&supplierid='+this.value ">
                 <?php
-                $result = viewsupplier();
+                $result = view("select * from supplier order by supplier_id");
 				$i =1;
                 foreach ($result as $data ) {
                     if($_SESSION['supplierid'] == $data['supplier_id'])
@@ -35,28 +41,36 @@
                 }
                     echo "</select></td></tr>";
                 ?>
-                <tr><td>ยี่ห้อ</td><td><select name="prodid" onchange="window.location='index.php?page=order&brandid='+this.value ">
+                <tr><td>ยี่ห้อ</td><td><select name="brandid" onchange="window.location='index.php?page=order&brandid='+this.value ">
                 <?php
-                $result = selectbrandonorder($_SESSION['supplierid']);
+                $result = select("select DISTINCT a.brand_id,a.brand_name from brand a, product b,model c where b.model_id = c.model_id and a.brand_id = b.brand_id and b.supplier_id = '".$_SESSION['supplierid']."' order by a.brand_id ");
 				$i =1;
                 foreach ($result as $data ) {
-                    echo "<option value='".$data['brand_id']."'>".$data['brand_name']."</option>";
+                    if($_SESSION['brandid'] == $data['brand_id'])
+                         echo "<option value='".$data['brand_id']."' selected>".$data['brand_name']."</option>";
+                    else
+                        echo "<option value='".$data['brand_id']."'>".$data['brand_name']."</option>";
                     $i++;
                 }
                     echo "</select></td></tr>";            
                 ?>           
-                <tr><td>รุ่น</td><td><select name="prodid" onchange="window.location='index.php?page=order&modelid='+this.value ">
+                <tr><td>รุ่น</td><td><select name="prodid" onchange="window.location='index.php?page=order&prodid='+this.value ">
                 <?php
-                $result = viewproduct();
-				$i =1;
+                $result = select("select DISTINCT a.brand_id,a.brand_name,c.model_name,b.prod_id from brand a, product b,model c where b.model_id = c.model_id and a.brand_id = b.brand_id and b.supplier_id = '".$_SESSION['supplierid']."' and b.brand_id = '".$_SESSION['brandid']."' order by a.brand_id");
+                $i =1;
                 foreach ($result as $data ) {
-                    echo "<option value='".$data['prod_id']."'>".$data['model_name']."</option>";
+                    if($_SESSION['prodid'] == $data['prod_id'])
+                        echo "<option value='".$data['prod_id']."' selected>".$data['model_name']."</option>";
+                    else
+                        echo "<option value='".$data['prod_id']."'>".$data['model_name']."</option>";
                     $i++;
                 }
                     echo "</select></td></tr>";            
                 ?>
+                            <tr><td>จำนวน</td><td><input type="text" name="amount"></td></tr>
+                            <tr><td>ราคา</td><td><input type="text" name="price"></td></tr>
             </table>
-            <input class="btn" type="submit" name="page" value="เพิ่มข้อมูลยี่ห้อ">
+            <input class="btn" type="submit" name="page" value="เลือกสินค้า">
             </form>
             
         </div>

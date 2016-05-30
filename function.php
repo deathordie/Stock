@@ -98,8 +98,8 @@ function addmodel($strbrandid,$strmodelname){
     mysql_close();
 }
 
-function editmodel($strid,$strbrandid,$strmodelname){
-    $str = "update model set brand_id = ".$strbrandid." ,model_name = '".$strmodelname."' where model_id = ".$strid." ";
+function editmodel($strid,$strmodelname){
+    $str = "update model set model_name = '".$strmodelname."' where model_id = ".$strid." ";
     $query = mysql_query($str)or die (mysql_error());
     echo "<script lang='javascript'>alert('แก้ไขข้อมูลเรียบร้อยแล้ว');</script>";
     echo "<script type='text/javascript'>window.location.href = 'index.php?page=managemodel';</script>";
@@ -122,8 +122,8 @@ function editsupplier($strid,$strsuppliername){
     mysql_close();
 }
 
-function addproduct($strsupplierid,$strmodelid,$strcategoryid,$strwarranty,$warrantytype){
-    $str = "insert into product (supplier_id,model_id,category_id,warranty,warrantytype) values('".$strsupplierid."','".$strmodelid."','".$strcategoryid."','".$strwarranty."','".$warrantytype."')";
+function addproduct($strsupplierid,$strmodelid,$strcategoryid,$strwarranty,$warrantytype,$strbrandid){
+    $str = "insert into product (supplier_id,model_id,category_id,warranty,warrantytype,brand_id) values('".$strsupplierid."','".$strmodelid."','".$strcategoryid."','".$strwarranty."','".$warrantytype."','".$strbrandid."')";
     $query = mysql_query($str)or die (mysql_error());
     echo "<script lang='javascript'>alert('บันทึกข้อมูลเรียบร้อยแล้ว');</script>";
     echo "<script type='text/javascript'>window.location.href = 'index.php?page=manageproduct';</script>";
@@ -160,6 +160,34 @@ function selectbrandonorder($strsupplierid){
 		   
 	return $result;
         mysql_close();
+}
+
+function order($prodid,$amount){
+    if(!isset($_SESSION['productamount'])){
+        echo "No Product";
+        $_SESSION['productamount'] = 1;
+        $_SESSION['prodid'][$_SESSION['productamount']] = $prodid;
+        $_SESSION['amount'][$_SESSION['productamount']] = $amount;
+    }
+    else{
+        $key = array_search($prodid, $_SESSION['prodid']);
+        echo "Have Product";
+        if($key){
+            $_SESSION['amount'][$key] = $_SESSION['amount'][$key] + $amount;
+        }
+        else{
+            $_SESSION['productamount']++;
+            $_SESSION['prodid'][$_SESSION['productamount']] = $prodid;
+            $_SESSION['amount'][$_SESSION['productamount']] = $amount;
+        }    
+         
+    }
+}
+
+function showorder(){
+    for($i=1;$i<$_SESSION['productamount'];$i++) {
+        echo  $_SESSION['prodid'][$i];
+    }
 }
 
 function login($strusr,$strpass){

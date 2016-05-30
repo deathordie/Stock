@@ -1,6 +1,6 @@
 <?php
 	if(isset($_GET['page']) && $_GET['warranty'] != '' && $_GET['modelid'] != ''){
-		addproduct($_GET['supplierid'],$_GET['modelid'],$_GET['categoryid'],$_GET['warranty'],$_GET['warrantytype']);
+		addproduct($_GET['supplierid'],$_GET['modelid'],$_GET['categoryid'],$_GET['warranty'],$_GET['warrantytype'],$_GET['brandid']);
 	}
 ?>
 <script lang="javascript">
@@ -31,15 +31,15 @@
             <table class="table">
                 <tr><td><label>ผู้จัดจำหน่าย</label></td><td><select name='supplierid'>
 														<?php
-														$result = viewsupplier();
+														$result = view("select * from supplier order by supplier_id");
 														foreach ($result as $data ) {
 															echo "<option value=".$data['supplier_id'].">".$data['supplier_name']."</option>";
                    										}
 														?>
 													</select></td></tr>
-                <tr><td><label>ยี่ห้อ</label></td><td><select name='brandid' onchange="window.location='index.php?page=เพิ่มข้อมูลสินค้า&brandid='+this.value ">
+                <tr><td><label>ยี่ห้อ</label></td><td><select name='brandid' >
 														<?php
-														$result = viewbrand();
+														$result = view("select * from brand order by brand_id");
 														foreach ($result as $data ) {
                                                                                                                         if($_GET['brandid'] == $data['brand_id'])
                                                                                                                             echo "<option value=".$data['brand_id']." selected>".$data['brand_name']."</option>";
@@ -50,29 +50,20 @@
 													</select></td></tr>
                 <tr><td><label>รุ่น</label></td><td><select name='modelid' >
 														<?php
-                                                                                                                if(isset($_GET['brandid'])){
-                                                                                                                    $result = viewmodelonproduct($_GET['brandid']);
+                                                                                                               
+                                                                                                                    $result = view("select * from model order by model_id");
                                                                                                                     foreach ($result as $data ) {
 															echo "<option value=".$data['model_id'].">".$data['model_name']."</option>";
                    										}
-                                                                                                                }
-                                                                                                                else{
-                                                                                                                    $result = viewmodel();
-                                                                                                                    foreach ($result as $data ) {
-															echo "<option value=".$data['model_id'].">".$data['model_name']."</option>";
-                   										}
-                                                                                                                }
+                                                                                                                
 														?>
 													</select></td></tr>
                 <tr><td><label>หมวดหมู่</label></td><td><select name='categoryid' >
 														<?php
-														$result = viewcategory();
+														$result = view("select * from category order by category_id");
 														foreach ($result as $data ) {
-                                                                                                                        if($_GET['brandid'] == $data['category_id'])
-                                                                                                                            echo "<option value=".$data['category_id']." selected>".$data['category_name']."</option>";
-                                                                                                                        else
-                                                                                                                            echo "<option value=".$data['category_id'].">".$data['category_name']."</option>";
-                   										}
+                                                                                                                    echo "<option value=".$data['category_id'].">".$data['category_name']."</option>";
+                                                                                                                }
 														?>
 													</select></td></tr>
 				<tr><td><label>ระเวลาประกัน</label></td><td><input type="text" name="warranty"></td></tr>

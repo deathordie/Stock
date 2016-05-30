@@ -1,8 +1,7 @@
 <?php
-    if(isset($_GET['page']) && $_GET['brandid'] != '' && $_GET['modelname'] != '' && $_GET['id'] != ''){
-        editmodel($_GET['id'],$_GET['brandid'],$_GET['modelname']);
-        echo "OK";
-	}
+    if(isset($_GET['page']) && $_GET['modelname'] != '' && $_GET['id'] != ''){
+        editmodel($_GET['id'],$_GET['modelname']);
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,16 +24,7 @@
 				$result = select("select * from model where model_id = ".$_SESSION['tmp']."");
 				foreach ($result as $data ) {
 					echo "<tr><td><label>รหัสรุ่น</label></td><td><input type='text' name='id' value='".$data['model_id']."' readonly /></td></tr>";
-					echo "<tr><td><label>ชื่อยี่ห้อ</label></td><td><select name='brandid'>";
-					$result1 = modelselectbrand();
-					foreach ($result1 as $data1 ) {
-						if($_SESSION['tmp'] == $data1['brand_id'])
-							echo "<option value=".$data1['brand_id']." selected>".$data1['brand_name']."</option>";
-						else
-							echo "<option value=".$data1['brand_id']." >".$data1['brand_name']."</option>";
-                   								}
-					echo "</select></td></tr>";
-                    echo "<tr><td><label>ชื่อรุ่น</label></td><td><input type='text' name='modelname' value='".$data['model_name']."'></td></tr>";
+					echo "<tr><td><label>ชื่อรุ่น</label></td><td><input type='text' name='modelname' value='".$data['model_name']."'></td></tr>";
                 }
                     unset($_SESSION['tmp']);
 			?>

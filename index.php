@@ -158,7 +158,7 @@
 								$_SESSION['tmp'] = $_GET['id'];
 								include 'editproduct.php';
 						   }
-						   else if($_GET['page'] == "order")
+						   else if($_GET['page'] == "order" || $_GET['page'] == "เลือกสินค้า")
                                include 'orderproduct.php';
 							else if($_GET['page'] == "logout")
                                 logout();
