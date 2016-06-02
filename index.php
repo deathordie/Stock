@@ -81,7 +81,7 @@
                             <a href="index.php?page=manageproduct">จัดการข้อมูลสินค้า</a>
                         </li>
                         <?php 
-                            if($_GET['page'] == 'order' || $_GET['page'] == 'สั่งซื้อสินค้า' || $_GET['page'] == '' || $_GET['page'] == '')
+                            if($_GET['page'] == 'order' || $_GET['page'] == 'สั่งซื้อสินค้า' || $_GET['page'] == 'ดูสินค้าที่เลือก' || $_GET['page'] == 'ลบสินค้า')
                                 echo "<li class='active'>";
                             else
                                 echo "<li>";
@@ -89,7 +89,7 @@
                             <a href="index.php?page=order">สั่งซื้อสินค้า</a>
                         </li>
 						<li>
-                            <a href="index.php?page=logout">ออกจากระบบ</a>
+                            <a href="index.php?page=logout" onClick="return confirm('คุณต้องการออกจากระบบหรือไม่ ?')">ออกจากระบบ</a>
                         </li>
                     </ul>
                 </div>
@@ -160,9 +160,12 @@
 						   }
 						   else if($_GET['page'] == "order" || $_GET['page'] == "เลือกสินค้า")
                                include 'orderproduct.php';
+                                                   else if($_GET['page'] == "ดูสินค้าที่เลือก" || $_GET['page'] == "ลบข้อมูลสั่งซื้อสินค้า")
+                               include 'orderlist.php';
+                                                   
 							else if($_GET['page'] == "logout")
-                                logout();
-                           
+                                                            logout();
+                                                        
                         }
                        else
                            include 'home.php';

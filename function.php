@@ -1,4 +1,5 @@
 <?php
+    
 function view($str){
     $query = mysql_query($str)or die (mysql_error());
     $result = array();
@@ -18,6 +19,14 @@ function select($str){
 	unset($_SESSION['tmp']);	   
 	return $result;
         mysql_close();
+}
+
+function add($str){
+    $str = "insert into employee (emp_fname,emp_lname,emp_username,emp_password) values('".$strfname."','".$strlname."','".$strusr."','".$strpass."')";
+    $query = mysql_query($str)or die (mysql_error());
+    echo "<script lang='javascript'>alert('บันทึกข้อมูลเรียบร้อยแล้ว');</script>";
+    echo "<script type='text/javascript'>window.location.href = 'index.php?page=manageuser';</script>";
+    mysql_close();
 }
 
 function adduser($strfname,$strlname,$strusr,$strpass){
@@ -150,44 +159,51 @@ function editproduct($strid,$strsupplierid,$strmodelid,$strcategoryid,$strwarran
     mysql_close();
 }
 
-function selectbrandonorder($strsupplierid){
-    $str = "select DISTINCT a.brand_id,a.brand_name from brand a, product b,model c where b.model_id = c.model_id and a.brand_id = '".$strsupplierid."' order by a.brand_id ";
-    $query = mysql_query($str)or die (mysql_error());
-    $result = array();
-    while($data = mysql_fetch_array($query)){
-           array_push($result,$data);
-           }
-		   
-	return $result;
-        mysql_close();
-}
-
-function order($prodid,$amount){
-    if(!isset($_SESSION['productamount'])){
-        echo "No Product";
-        $_SESSION['productamount'] = 1;
-        $_SESSION['prodid'][$_SESSION['productamount']] = $prodid;
-        $_SESSION['amount'][$_SESSION['productamount']] = $amount;
+function order($prodid,$amount,$price){
+    if(!isset($_SESSION['intline'])){
+        $_SESSION['intline'] = 1;
+        $_SESSION['orderprodid'][1] = $prodid;
+        $_SESSION['orderamount'][1] = $amount;
+        $_SESSION['orderprice'][1] = $price;
+        calprice();
     }
     else{
-        $key = array_search($prodid, $_SESSION['prodid']);
-        echo "Have Product";
-        if($key){
-            $_SESSION['amount'][$key] = $_SESSION['amount'][$key] + $amount;
+        $key = array_search($prodid,$_SESSION['orderprodid']);
+        if($key != ""){
+            $_SESSION['orderamount'][$key] = $_SESSION['orderamount'][$key] + $amount;  
+            calprice();
         }
         else{
-            $_SESSION['productamount']++;
-            $_SESSION['prodid'][$_SESSION['productamount']] = $prodid;
-            $_SESSION['amount'][$_SESSION['productamount']] = $amount;
+            $_SESSION['intline'] = $_SESSION['intline'] + 1;
+            $_SESSION['orderprodid'][$_SESSION['intline']] = $prodid;
+            $_SESSION['orderamount'][$_SESSION['intline']] = $amount;
+            $_SESSION['orderprice'][$_SESSION['intline']] = $price;
+            calprice();
         }    
          
     }
 }
 
 function showorder(){
-    for($i=1;$i<$_SESSION['productamount'];$i++) {
-        echo  $_SESSION['prodid'][$i];
-    }
+     for($i=1;$i<=$_SESSION['intline'];$i++){
+        echo $_SESSION['orderprodid'][$i].'  '. $_SESSION['orderamount'][$i].'<br>';
+     }
+}
+
+function calprice(){
+     $_SESSION['totalprice'] = 0;
+     for($i=1;$i<=$_SESSION['intline'];$i++){
+        $_SESSION['totalprice'] += $_SESSION['orderamount'][$i] * $_SESSION['orderprice'][$i];
+     }
+}
+
+function  delorderprod($str){
+    $key = array_search($str,$_SESSION['orderprodid']);
+    echo $key;
+    unset($_SESSION['orderamount'][$key]);
+    unset($_SESSION['orderprice'][$key]);
+    unset($_SESSION['orderprodid'][$key]);
+    calprice();
 }
 
 function login($strusr,$strpass){

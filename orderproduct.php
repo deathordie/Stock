@@ -1,7 +1,6 @@
 <?php
     if($_GET['page'] == "เลือกสินค้า" && $_GET['prodid'] != '' && $_GET['amount'] != '' ){
-        echo "add product";
-        order($_GET['prodid'], $_GET['amount']);
+        order($_GET['prodid'], $_GET['amount'], $_GET['price']);
     }
     else if(isset($_GET['supplierid']))
     $_SESSION['supplierid'] = $_GET['supplierid'];
@@ -10,7 +9,6 @@
     else if(isset($_GET['prodid']))
     $_SESSION['prodid'] = $_GET['prodid'];
     
-    showorder();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,8 +29,10 @@
                 <tr><td>ผู้จัดจำหน่าย</td><td><select name="supplierid" onchange="window.location='index.php?page=order&supplierid='+this.value ">
                 <?php
                 $result = view("select * from supplier order by supplier_id");
-				$i =1;
+                $i =1;
                 foreach ($result as $data ) {
+                    if($i==1 && $_SESSION['supplierid'] =='')
+                        $_SESSION['supplierid'] = $data['supplier_id'];
                     if($_SESSION['supplierid'] == $data['supplier_id'])
                          echo "<option value='".$data['supplier_id']."' selected>".$data['supplier_name']."</option>";
                     else    
@@ -46,6 +46,8 @@
                 $result = select("select DISTINCT a.brand_id,a.brand_name from brand a, product b,model c where b.model_id = c.model_id and a.brand_id = b.brand_id and b.supplier_id = '".$_SESSION['supplierid']."' order by a.brand_id ");
 				$i =1;
                 foreach ($result as $data ) {
+                    if($i==1 && $_SESSION['brandid'] == '')
+                        $_SESSION['brandid'] = $data['brand_id'];
                     if($_SESSION['brandid'] == $data['brand_id'])
                          echo "<option value='".$data['brand_id']."' selected>".$data['brand_name']."</option>";
                     else
@@ -70,7 +72,7 @@
                             <tr><td>จำนวน</td><td><input type="text" name="amount"></td></tr>
                             <tr><td>ราคา</td><td><input type="text" name="price"></td></tr>
             </table>
-            <input class="btn" type="submit" name="page" value="เลือกสินค้า">
+            <input class="btn" type="submit" name="page" value="เลือกสินค้า"> <input class="btn" type="submit" name="page" value="ดูสินค้าที่เลือก">
             </form>
             
         </div>
