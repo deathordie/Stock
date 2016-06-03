@@ -81,12 +81,20 @@
                             <a href="index.php?page=manageproduct">จัดการข้อมูลสินค้า</a>
                         </li>
                         <?php 
-                            if($_GET['page'] == 'order' || $_GET['page'] == 'สั่งซื้อสินค้า' || $_GET['page'] == 'ดูสินค้าที่เลือก' || $_GET['page'] == 'ลบสินค้า')
+                            if($_GET['page'] == 'order' || $_GET['page'] == 'ย้อนกลับ' || $_GET['page'] =='แสดงรายละเอียดการสั่งซื้อ' || $_GET['page'] == 'manageorder' || $_GET['page'] == 'สั่งซื้อสินค้า' || $_GET['page'] == 'ดูสินค้าที่เลือก' || $_GET['page'] == 'ลบสินค้า')
                                 echo "<li class='active'>";
                             else
                                 echo "<li>";
                         ?>
-                            <a href="index.php?page=order">สั่งซื้อสินค้า</a>
+                            <a href="index.php?page=manageorder">สั่งซื้อสินค้า</a>
+                        </li>
+                        <?php 
+                            if($_GET['page'] == 'managereceive' || $_GET['page'] == '' || $_GET['page'] == '' || $_GET['page'] == '')
+                                echo "<li class='active'>";
+                            else
+                                echo "<li>";
+                        ?>
+                            <a href="index.php?page=managereceive">รับสินค้า</a>
                         </li>
 						<li>
                             <a href="index.php?page=logout" onClick="return confirm('คุณต้องการออกจากระบบหรือไม่ ?')">ออกจากระบบ</a>
@@ -158,13 +166,22 @@
 								$_SESSION['tmp'] = $_GET['id'];
 								include 'editproduct.php';
 						   }
-						   else if($_GET['page'] == "order" || $_GET['page'] == "เลือกสินค้า")
+                                                   else if($_GET['page'] == "manageorder" || $_GET['page'] == "ย้อนกลับ")   
+                               include 'manageorder.php';
+                                                   else if($_GET['page'] == "แสดงรายละเอียดการสั่งซื้อ")   
+                               include 'showorder.php';
+						   else if($_GET['page'] == "สั่งซื้อสินค้า" || $_GET['page'] == "เลือกสินค้า")
                                include 'orderproduct.php';
-                                                   else if($_GET['page'] == "ดูสินค้าที่เลือก" || $_GET['page'] == "ลบข้อมูลสั่งซื้อสินค้า")
+                                                   else if($_GET['page'] == "ดูสินค้าที่เลือก" || $_GET['page'] == "ลบข้อมูลสั่งซื้อสินค้า" || $_GET['page'] == "บันทึกข้อมูลการสั่งซื้อ" )
                                include 'orderlist.php';
-                                                   
-							else if($_GET['page'] == "logout")
-                                                            logout();
+                                                   else if($_GET['page'] == "แก้ไขข้อมูลสั่งซื้อ" || $_GET['page'] == "แก้ไขรายละเอียดสินค้าที่สั่งซื้อ" )
+                                                   include 'editorder.php';    
+                                                   else if($_GET['page'] == "managereceive" )
+                                                   include 'managereceive.php';
+                                                   else if($_GET['page'] == "รับสินค้า" )
+                                                   include 'receiveproduct.php';
+                                                   else if($_GET['page'] == "logout")
+                                                        logout();
                                                         
                         }
                        else

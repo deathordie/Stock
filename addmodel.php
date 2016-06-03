@@ -1,6 +1,6 @@
 <?php
 	if(isset($_GET['page']) && $_GET['modelname'] != ''){
-		addmodel($_GET['brandid'],$_GET['modelname']);
+		addmodel($_GET['modelname']);
 	}
 ?>
 <script lang="javascript">

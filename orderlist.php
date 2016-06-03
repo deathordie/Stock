@@ -1,6 +1,9 @@
 <?php
     if($_GET['page'] == 'ลบข้อมูลสั่งซื้อสินค้า')
         delorderprod($_GET['id']);
+    else if($_GET['page'] == 'บันทึกข้อมูลการสั่งซื้อ')
+        addorder($_SESSION['suppileridno'], $_SESSION['totalprice'], $_SESSION['orderprodid'], $_SESSION['orderamount'], $_SESSION['orderprice']);
+        
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +38,7 @@
                     echo "<tr><td colspan=3>ราคารวม</td><td colspan=4>".$_SESSION['totalprice']."</td></tr>";
                 ?>
             </table>
-            <input class="btn" type="submit" name="page" value="เลือกสินค้า"> <input class="btn" type="submit" name="page" value="ดูสินค้าที่เลือก">
+            <input class="btn" type="submit" name="page" value="เลือกสินค้า"> <input class="btn" type="submit" name="page" value="บันทึกข้อมูลการสั่งซื้อ">
             </form>
             
         </div>

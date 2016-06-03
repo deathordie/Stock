@@ -99,8 +99,8 @@ function modelselectbrand(){
     mysql_close();
 }
 
-function addmodel($strbrandid,$strmodelname){
-    $str = "insert into model (brand_id,model_name) values(".$strbrandid.",'".$strmodelname."')";
+function addmodel($strmodelname){
+    $str = "insert into model (model_name) values('".$strmodelname."')";
     $query = mysql_query($str)or die (mysql_error());
     echo "<script lang='javascript'>alert('บันทึกข้อมูลเรียบร้อยแล้ว');</script>";
     echo "<script type='text/javascript'>window.location.href = 'index.php?page=managemodel';</script>";
@@ -159,9 +159,10 @@ function editproduct($strid,$strsupplierid,$strmodelid,$strcategoryid,$strwarran
     mysql_close();
 }
 
-function order($prodid,$amount,$price){
+function order($supplier,$prodid,$amount,$price){
     if(!isset($_SESSION['intline'])){
         $_SESSION['intline'] = 1;
+        $_SESSION['suppileridno'] = $supplier;
         $_SESSION['orderprodid'][1] = $prodid;
         $_SESSION['orderamount'][1] = $amount;
         $_SESSION['orderprice'][1] = $price;
@@ -199,11 +200,50 @@ function calprice(){
 
 function  delorderprod($str){
     $key = array_search($str,$_SESSION['orderprodid']);
-    echo $key;
     unset($_SESSION['orderamount'][$key]);
     unset($_SESSION['orderprice'][$key]);
     unset($_SESSION['orderprodid'][$key]);
     calprice();
+}
+
+function  editorder($str){
+    $key = array_search($str,$_SESSION['orderprodid']);
+    return $key;
+    
+}
+
+function  editchangeorder($strid,$amount,$price){
+    $key = array_search($strid,$_SESSION['orderprodid']);
+    $_SESSION['orderamount'][$key] = $amount;
+    $_SESSION['orderprice'][$key] = $price;
+    calprice();
+    echo "<script lang='javascript'>alert('แก้ไขข้อมูลเรียบร้อยแล้ว');</script>";
+    echo "<script type='text/javascript'>window.location.href = 'index.php?page=ดูสินค้าที่เลือก';</script>";
+}
+
+function  addorder($supid,$totalprice,$prodid,$amount,$priceperunit){
+    date_default_timezone_set('asia/bangkok');
+    $str= "insert into orders (supplier_id,totalprice) values ('".$supid."','".$totalprice."')";
+    $query = mysql_query($str)or die (mysql_error());
+    
+    $str= "select order_id from orders order by order_id desc limit 1";
+    $query = mysql_query($str)or die (mysql_error());
+    $data = mysql_fetch_array($query);
+      for($i=1;$i <= $_SESSION['intline'];$i++){
+        if($_SESSION['orderprodid'][$i] != ''){
+                
+           $str= "insert into orderdetail (order_id,prod_id,amount,priceperunit) values ('".$data['order_id']."','".$prodid[$i]."','".$amount[$i]."','".$priceperunit[$i]."')";
+           $query = mysql_query($str)or die (mysql_error());
+            }
+    }
+        unset($_SESSION['intline']);
+        unset($_SESSION['suppileridno']);
+        unset($_SESSION['orderprodid']);
+        unset($_SESSION['orderamount']);
+        unset($_SESSION['orderprice']);
+        unset($_SESSION['totalprice']);
+    echo "<script lang='javascript'>alert('บันทึกข้อมูลเรียบร้อยแล้ว');</script>";
+    echo "<script type='text/javascript'>window.location.href = 'index.php?page=manageorder';</script>";
 }
 
 function login($strusr,$strpass){
