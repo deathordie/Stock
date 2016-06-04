@@ -246,6 +246,50 @@ function  addorder($supid,$totalprice,$prodid,$amount,$priceperunit){
     echo "<script type='text/javascript'>window.location.href = 'index.php?page=manageorder';</script>";
 }
 
+function addreceive($strprodid,$serial){
+        if(!isset($_SESSION['reciveprodid'])){
+        for($i=0;$i<count($serial);$i++){
+            $_SESSION['serial'][$i] = $serial[$i];
+            $_SESSION['reciveprodid'][$i] = $strprodid;
+            checkserial();
+                }
+        }
+        else{
+            $num = count($_SESSION['reciveprodid']);
+            for($i=0;$i<count($serial);$i++){
+            $_SESSION['serial'][$num] = $serial[$i];
+            $_SESSION['reciveprodid'][$num] = $strprodid;
+            $num++; 
+            }
+            checkserial();
+        }
+            
+}     
+
+function show(){
+    for($i=0;$i<=count($_SESSION['reciveprodid']);$i++){
+            echo $_SESSION['reciveprodid'][$i].' '.$_SESSION['serial'][$i].'<br>';
+    }
+}
+
+function checkreceiveprod($str){
+    $key = array_search($str, $_SESSION['reciveprodid']);
+    if($key == null && $key == ' ' || $key > 0)
+        return 1;
+    else
+        return 0;
+} 
+
+function checkserial(){
+    for($i=0;$i<=count($_SESSION['serial']);$i++){
+        $key = array_search($_SESSION['serial'][$i], $_SESSION['serial']);
+        echo $key;
+        
+    }
+    
+    
+}
+
 function login($strusr,$strpass){
     $str = "select emp_fname from employee where emp_username = '".$strusr."' and emp_password = '".$strpass."'  ";
     $query = mysql_query($str)or die (mysql_error());
