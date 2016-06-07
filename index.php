@@ -178,7 +178,7 @@
                                                    include 'editorder.php';    
                                                    else if($_GET['page'] == "managereceive" )
                                                    include 'managereceive.php';
-                                                   else if($_GET['page'] == "รับสินค้า" )
+                                                   else if($_GET['page'] == "รับสินค้า" || $_GET['page'] == "ยืนยันการรับสินค้า")
                                                    include 'receiveproduct.php';
                                                    else if($_GET['page'] == "logout")
                                                         logout();

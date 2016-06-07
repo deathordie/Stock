@@ -251,19 +251,19 @@ function addreceive($strprodid,$serial){
         for($i=0;$i<count($serial);$i++){
             $_SESSION['serial'][$i] = $serial[$i];
             $_SESSION['reciveprodid'][$i] = $strprodid;
-            checkserial();
                 }
-        }
+            
+            }
         else{
             $num = count($_SESSION['reciveprodid']);
             for($i=0;$i<count($serial);$i++){
-            $_SESSION['serial'][$num] = $serial[$i];
-            $_SESSION['reciveprodid'][$num] = $strprodid;
-            $num++; 
+                $_SESSION['serial'][$num] = $serial[$i];
+                $_SESSION['reciveprodid'][$num] = $strprodid;
+                $num++; 
             }
-            checkserial();
+           
         }
-            
+     checkserial();        
 }     
 
 function show(){
@@ -275,19 +275,75 @@ function show(){
 function checkreceiveprod($str){
     $key = array_search($str, $_SESSION['reciveprodid']);
     if($key == null && $key == ' ' || $key > 0)
-        return 1;
+        return true;
     else
-        return 0;
+        return false;
 } 
 
 function checkserial(){
+   
     for($i=0;$i<=count($_SESSION['serial']);$i++){
-        $key = array_search($_SESSION['serial'][$i], $_SESSION['serial']);
-        echo $key;
         
+        
+        for($l=0;$l<=count($_SESSION['serial']);$l++){
+            
+            if($_SESSION['serial'][$i] == $_SESSION['serial'][$l+1]){
+                echo "<script lang='javascript'>alert('Serial สินค้าซ้ำกัน');</script>";
+                unset($_SESSION['reciveprodid']);
+                unset($_SESSION['serial']);
+                return false;
+                break;
+            }
+        } 
+        return true;
+    }
+}
+
+function receiveproduct(){
+    $str ="insert into receive (order_id) values (".$_SESSION['id'].")";
+    $query = mysql_query($str)or die (mysql_error());
+    
+    $str ="select receive_id from receive order by receive_id desc limit 1";
+    $query = mysql_query($str)or die (mysql_error());
+    $data = mysql_fetch_array($query);
+    
+    for($i=0;$i<count($_SESSION['serial']);$i++){
+        $str ="insert into productdetail (prod_id,serial,receive_id) values ('".$_SESSION['reciveprodid'][$i]."','".$_SESSION['serial'][$i]."','".$data['receive_id']."')";
+        $query = mysql_query($str)or die (mysql_error());
+    
     }
     
+    unset($_SESSION['id']);
+    unset($_SESSION['reciveprodid']);
+    unset($_SESSION['serial']);
+    echo "<script lang='javascript'>alert('บันทึกข้อมูลเรียบร้อยแล้ว');</script>";
+    echo "<script type='text/javascript'>window.location.href = 'index.php?page=managereceive';</script>";
+}
+
+function countproductamount(){
+    $str = "select prod_id from product order by prod_id";
+    $query = mysql_query($str)or die (mysql_error());
+    $result = array();
+    while($data = mysql_fetch_array($query)){
+           array_push($result,$data);
+           }
+    $num = count($result);
+    for($i=0;$i<$num;$i++){
+       $str = "select COUNT(prod_id) as amount from productdetail where '".$result[$i]."' order by prod_id";
+       $query = mysql_query($str)or die (mysql_error());
+       $data = mysql_fetch_array($query);
+       
+       $str = "update product set amount = '".$data."' ";
+       $query = mysql_query($str)or die (mysql_error());
+    }
     
+}
+
+function getserialamount($orderid,$prodid){
+    $str = "select amount from orders a, orderdetail b where a.order_id = ".$orderid." and a.order_id = b.order_id and b.prod_id = ".$prodid." order by b.prod_id asc ";
+    $query = mysql_query($str)or die (mysql_error());
+    $result = mysql_fetch_array($query);
+    return $result;
 }
 
 function login($strusr,$strpass){

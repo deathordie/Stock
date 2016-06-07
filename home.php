@@ -13,7 +13,8 @@
         <div class="container-fluid" style="text-align:center">
             <?php 
 				echo "ยินดีต้นรับคุณ " .$_SESSION["loginname"];
-			?>
+                                countproductamount();
+            ?>
             
         </div>
     </body>    
