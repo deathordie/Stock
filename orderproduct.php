@@ -73,7 +73,7 @@
                             <tr><td>จำนวน</td><td><input type="text" name="amount"></td></tr>
                             <tr><td>ราคา</td><td><input type="text" name="price"></td></tr>
             </table>
-            <input class="btn" type="submit" name="page" value="เลือกสินค้า"> <input class="btn" type="submit" name="page" value="ดูสินค้าที่เลือก">
+            <input class="btn" type="submit" name="page" value="ย้อนกลับ" onclick=""> <input class="btn" type="submit" name="page" value="ดูสินค้าที่เลือก">
             </form>
             
         </div>

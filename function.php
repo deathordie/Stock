@@ -131,8 +131,8 @@ function editsupplier($strid,$strsuppliername){
     mysql_close();
 }
 
-function addproduct($strsupplierid,$strmodelid,$strcategoryid,$strwarranty,$warrantytype,$strbrandid){
-    $str = "insert into product (supplier_id,model_id,category_id,warranty,warrantytype,brand_id) values('".$strsupplierid."','".$strmodelid."','".$strcategoryid."','".$strwarranty."','".$warrantytype."','".$strbrandid."')";
+function addproduct($strsupplierid,$strmodelid,$strcategoryid,$strwarranty,$warrantytype,$strbrandid,$strpoint){
+    $str = "insert into product (supplier_id,model_id,category_id,warranty,warrantytype,brand_id,pointorder) values('".$strsupplierid."','".$strmodelid."','".$strcategoryid."','".$strwarranty."','".$warrantytype."','".$strbrandid."','".$strpoint."')";
     $query = mysql_query($str)or die (mysql_error());
     echo "<script lang='javascript'>alert('บันทึกข้อมูลเรียบร้อยแล้ว');</script>";
     echo "<script type='text/javascript'>window.location.href = 'index.php?page=manageproduct';</script>";
@@ -151,8 +151,8 @@ function selecteditproduct($strid){
         mysql_close();
 }
 
-function editproduct($strid,$strsupplierid,$strmodelid,$strcategoryid,$strwarranty,$warrantytype){
-    $str = "update product set supplier_id = '".$strsupplierid."', model_id = '".$strmodelid."', category_id = '".$strcategoryid."' , warranty = '".$strwarranty."', warrantytype = '".$warrantytype."' where prod_id = '".$strid."' ";
+function editproduct($strid,$strsupplierid,$strmodelid,$strcategoryid,$strwarranty,$warrantytype,$strpointorder){
+    $str = "update product set supplier_id = '".$strsupplierid."', model_id = '".$strmodelid."', category_id = '".$strcategoryid."' , warranty = '".$strwarranty."', warrantytype = '".$warrantytype."' , pointorder = '".$strpointorder."' where prod_id = '".$strid."' ";
     $query = mysql_query($str)or die (mysql_error());
     echo "<script lang='javascript'>alert('แก้ไขข้อมูลเรียบร้อยแล้ว');</script>";
     echo "<script type='text/javascript'>window.location.href = 'index.php?page=manageproduct';</script>";
@@ -160,8 +160,8 @@ function editproduct($strid,$strsupplierid,$strmodelid,$strcategoryid,$strwarran
 }
 
 function order($supplier,$prodid,$amount,$price){
-    if(!isset($_SESSION['intline'])){
-        $_SESSION['intline'] = 1;
+    if(!isset($_SESSION['orderintline'])){
+        $_SESSION['orderintline'] = 1;
         $_SESSION['suppileridno'] = $supplier;
         $_SESSION['orderprodid'][1] = $prodid;
         $_SESSION['orderamount'][1] = $amount;
@@ -175,10 +175,10 @@ function order($supplier,$prodid,$amount,$price){
             calprice();
         }
         else{
-            $_SESSION['intline'] = $_SESSION['intline'] + 1;
-            $_SESSION['orderprodid'][$_SESSION['intline']] = $prodid;
-            $_SESSION['orderamount'][$_SESSION['intline']] = $amount;
-            $_SESSION['orderprice'][$_SESSION['intline']] = $price;
+            $_SESSION['orderintline'] = $_SESSION['orderintline'] + 1;
+            $_SESSION['orderprodid'][$_SESSION['orderintline']] = $prodid;
+            $_SESSION['orderamount'][$_SESSION['orderintline']] = $amount;
+            $_SESSION['orderprice'][$_SESSION['orderintline']] = $price;
             calprice();
         }    
          
@@ -193,7 +193,7 @@ function showorder(){
 
 function calprice(){
      $_SESSION['totalprice'] = 0;
-     for($i=1;$i<=$_SESSION['intline'];$i++){
+     for($i=1;$i<=$_SESSION['orderintline'];$i++){
         $_SESSION['totalprice'] += $_SESSION['orderamount'][$i] * $_SESSION['orderprice'][$i];
      }
 }
@@ -222,6 +222,11 @@ function  editchangeorder($strid,$amount,$price){
 }
 
 function  addorder($supid,$totalprice,$prodid,$amount,$priceperunit){
+    if(!isset($_SESSION['intline'])){
+        echo "<script lang='javascript'>alert('กรุณาเลือกสินค้าก่อน');</script>";
+        echo "<script type='text/javascript'>window.location.href = 'index.php?page=manageorder';</script>";
+    }
+    else{
     date_default_timezone_set('asia/bangkok');
     $str= "insert into orders (supplier_id,totalprice) values ('".$supid."','".$totalprice."')";
     $query = mysql_query($str)or die (mysql_error());
@@ -236,7 +241,7 @@ function  addorder($supid,$totalprice,$prodid,$amount,$priceperunit){
            $query = mysql_query($str)or die (mysql_error());
             }
     }
-        unset($_SESSION['intline']);
+        unset($_SESSION['orderintline']);
         unset($_SESSION['suppileridno']);
         unset($_SESSION['orderprodid']);
         unset($_SESSION['orderamount']);
@@ -244,6 +249,7 @@ function  addorder($supid,$totalprice,$prodid,$amount,$priceperunit){
         unset($_SESSION['totalprice']);
     echo "<script lang='javascript'>alert('บันทึกข้อมูลเรียบร้อยแล้ว');</script>";
     echo "<script type='text/javascript'>window.location.href = 'index.php?page=manageorder';</script>";
+    }
 }
 
 function addreceive($strprodid,$serial){
@@ -312,7 +318,7 @@ function receiveproduct(){
         $query = mysql_query($str)or die (mysql_error());
     
     }
-    
+    countproductamount();
     unset($_SESSION['id']);
     unset($_SESSION['reciveprodid']);
     unset($_SESSION['serial']);
@@ -329,12 +335,12 @@ function countproductamount(){
            }
     $num = count($result);
     for($i=0;$i<$num;$i++){
-       $str = "select COUNT(prod_id) as amount from productdetail where '".$result[$i]."' order by prod_id";
-       $query = mysql_query($str)or die (mysql_error());
-       $data = mysql_fetch_array($query);
+       $str1 = "select COUNT(prod_id) as amount from productdetail where prod_id = '".$result[$i][0]."' and status = 0 order by prod_id";
+       $query1 = mysql_query($str1)or die (mysql_error());
+       $data = mysql_fetch_array($query1);
        
-       $str = "update product set amount = '".$data."' ";
-       $query = mysql_query($str)or die (mysql_error());
+       $str1 = "update product set amount = '".$data['amount']."' where prod_id = '".$result[$i][0]."' ";
+       $query1 = mysql_query($str1)or die (mysql_error());
     }
     
 }
@@ -346,8 +352,99 @@ function getserialamount($orderid,$prodid){
     return $result;
 }
 
+function selectitem($id){
+    $str = "select amount from product where prod_id = ".$id." ";
+    $query = mysql_query($str)or die (mysql_error());
+    $result = mysql_fetch_array($query);    
+    if(!isset($_SESSION['withdrawintline'])){
+        $_SESSION['withdrawintline'] = 1;
+        $_SESSION['withdrawprodid'][$_SESSION['withdrawintline']] = $id;
+        $_SESSION['withdrawamount'][$_SESSION['withdrawintline']] = 1;
+        
+    }
+    else{
+        $key = array_search($id, $_SESSION['withdrawprodid']);
+        if($_SESSION['withdrawamount'][$key] == $result['amount']){
+            echo "<script lang='javascript'>alert('ไม่สามารถเลือกสินค้าเกินจำนวนที่มีอยู่ได้');</script>";
+        }
+        else{
+            if($key)
+            $_SESSION['withdrawamount'][$key]++;
+        
+            else{
+                $_SESSION['withdrawintline'] = $_SESSION['withdrawintline'] + 1;
+                $_SESSION['withdrawprodid'][$_SESSION['withdrawintline']] = $id;
+                $_SESSION['withdrawamount'][$_SESSION['withdrawintline']]++;
+        }
+    }
+    }
+    
+}
+
+function viewwithdrawn(){
+    for($i=1;$i <= $_SESSION['withdrawintline'];$i++){
+        if($_SESSION['withdrawprodid'][$i] != ''){
+        $str = "select b.model_name,c.brand_name from product a,model b ,brand c where a.model_id = b.model_id and a.brand_id = c.brand_id and a.prod_id = ".$_SESSION['withdrawprodid'][$i]." ";
+        $query = mysql_query($str)or die (mysql_error());
+        $result = mysql_fetch_array($query);
+        echo "<tr><td>".$i."</td><td>".$result['brand_name']."</td><td>".$result['model_name']."</td><td>".$_SESSION['withdrawamount'][$i]."</td><td><a href='index.php?page=รายการสินค้าที่เลือก&id=".$_SESSION['withdrawprodid'][$i]."'>ลบ</a></td></tr>";
+    
+        }
+    }
+}
+
+function  delwithdrawnprod($str){
+    $key = array_search($str,$_SESSION['withdrawprodid']);
+    unset($_SESSION['withdrawprodid'][$key]);
+    unset($_SESSION['withdrawamount'][$key]);
+}
+
+function withdraw(){
+    
+    if(!isset($_SESSION['withdrawintline'])){
+        echo "<script lang='javascript'>alert('กรุณาเลือกสินค้าก่อน');</script>";
+        echo "<script type='text/javascript'>window.location.href = 'index.php?page=managewithdraw';</script>";
+    }
+    else{    
+    date_default_timezone_set("asia/bangkok"); 
+    $date = date("Y-m-d H:i:s");  
+    $str1 = "insert into withdraw (withdraw_date,emp_id) values ('".$date."',".$_SESSION['emp_id'].")";
+    $query1 = mysql_query($str1)or die (mysql_error());
+    
+    for($i=1;$i<=$_SESSION['withdrawintline'];$i++){
+        if($_SESSION['withdrawprodid'][$i] != ''){
+            
+            $str = "select a.prod_id ,b.serial from product a, productdetail b, receive c where a.prod_id = b.prod_id and a.prod_id = ".$_SESSION['withdrawprodid'][$i]." and b.receive_id = c.receive_id and b.status = 0 order by c.receive_date limit ".$_SESSION['withdrawamount'][$i]." ";
+            $query = mysql_query($str)or die (mysql_error());
+            
+            while($data = mysql_fetch_array($query)){
+                
+                $str1 = "update productdetail set status = 1 where prod_id = ".$data['prod_id']." and serial = '".$data['serial']."' ";
+                $query1 = mysql_query($str1)or die (mysql_error());
+                
+                $str2 = "select withdraw_id from withdraw order by withdraw_id desc limit 1";
+                $query2 = mysql_query($str2)or die (mysql_error());
+                $result2 = mysql_fetch_array($query2);
+                                
+                $str1 = "insert into withdrawdetail (withdraw_id,prod_id,serial) values (".$result2['withdraw_id'].",".$data['prod_id'].",'".$data['serial']."')";
+                $query1 = mysql_query($str1)or die (mysql_error());
+                }
+                
+            
+        }
+    }
+    countproductamount();
+    unset($date);
+    unset($_SESSION['withdrawintline']);
+    unset($_SESSION['withdrawprodid']);
+    unset($_SESSION['withdrawamount']);
+    echo "<script lang='javascript'>alert('บันทึกข้อมูลเรียบร้อยแล้ว');</script>";
+    echo "<script type='text/javascript'>window.location.href = 'index.php?page=managewithdraw';</script>";
+    }
+}
+
 function login($strusr,$strpass){
-    $str = "select emp_fname from employee where emp_username = '".$strusr."' and emp_password = '".$strpass."'  ";
+    $str = "select emp_fname,emp_id from employee where emp_username = '".$strusr."' and emp_password = '".$strpass."'  ";
     $query = mysql_query($str)or die (mysql_error());
 	$data = mysql_fetch_array($query);
 	if($data == ""){		
@@ -357,6 +454,7 @@ function login($strusr,$strpass){
 	else{
 		session_start();
 		$_SESSION["loginname"] = $data['emp_fname'];
+                $_SESSION["emp_id"] = $data['emp_id'];
 		return true;
                 mysql_close();
 	}

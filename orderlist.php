@@ -24,7 +24,7 @@
                 <tr><td>ลำดับ</td><td>ผู้จัดจำหน่าย</td><td>ยี่ห้อ</td><td>รุ่น</td><td>จำนวน</td><td>ราคา</td><td colspan="2">เครื่องมือ</td>
                 <?php
                     $num =1 ;
-                    for($i=1;$i<=$_SESSION['intline'];$i++){
+                    for($i=1;$i<=$_SESSION['orderintline'];$i++){
                         if($_SESSION['orderprodid'][$i] != ''){
                         $result = select("select supplier_name, brand_name, model_name from supplier a, brand b, model c , product d where d.prod_id = ".$_SESSION['orderprodid'][$i]." and d.supplier_id = a.supplier_id and d.brand_id = b.brand_id and d.model_id = c.model_id ");
                          foreach ($result as $data ) {

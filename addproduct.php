@@ -1,6 +1,6 @@
 <?php
 	if(isset($_GET['page']) && $_GET['warranty'] != '' && $_GET['modelid'] != ''){
-		addproduct($_GET['supplierid'],$_GET['modelid'],$_GET['categoryid'],$_GET['warranty'],$_GET['warrantytype'],$_GET['brandid']);
+		addproduct($_GET['supplierid'],$_GET['modelid'],$_GET['categoryid'],$_GET['warranty'],$_GET['warrantytype'],$_GET['brandid'],$_GET['pointorder']);
 	}
 ?>
 <script lang="javascript">
@@ -73,6 +73,7 @@
                                             <option value="3">ปี</option>
                                             <option value="4">Lifetime</option>
                                         </select></td></tr>
+                                <tr><td><label>จุดสั่งซื้อ</label></td><td><input type="text" name="pointorder"></td></tr>
             </table>
             <input class="btn" type="submit" name="page" value="บันทึกข้อมูลสินค้า">
             </form>

@@ -81,7 +81,7 @@
                             <a href="index.php?page=manageproduct">จัดการข้อมูลสินค้า</a>
                         </li>
                         <?php 
-                            if($_GET['page'] == 'order' || $_GET['page'] == 'ย้อนกลับ' || $_GET['page'] =='แสดงรายละเอียดการสั่งซื้อ' || $_GET['page'] == 'manageorder' || $_GET['page'] == 'สั่งซื้อสินค้า' || $_GET['page'] == 'ดูสินค้าที่เลือก' || $_GET['page'] == 'ลบสินค้า')
+                            if($_GET['page'] == 'order' || $_GET['page'] =='แสดงรายละเอียดการสั่งซื้อ' || $_GET['page'] == 'manageorder' || $_GET['page'] == 'สั่งซื้อสินค้า' || $_GET['page'] == 'ดูสินค้าที่เลือก' || $_GET['page'] == 'ลบสินค้า')
                                 echo "<li class='active'>";
                             else
                                 echo "<li>";
@@ -89,12 +89,21 @@
                             <a href="index.php?page=manageorder">สั่งซื้อสินค้า</a>
                         </li>
                         <?php 
-                            if($_GET['page'] == 'managereceive' || $_GET['page'] == '' || $_GET['page'] == '' || $_GET['page'] == '')
+                            if($_GET['page'] == 'managereceive' || $_GET['page'] == 'ยืนยันการรับสินค้า' || $_GET['page'] == 'รับสินค้า')
                                 echo "<li class='active'>";
                             else
                                 echo "<li>";
                         ?>
                             <a href="index.php?page=managereceive">รับสินค้า</a>
+                        </li>
+                        </li>
+                        <?php 
+                            if($_GET['page'] == 'managewithdraw' || $_GET['page'] ==  "รายการสินค้าที่เลือก" || $_GET['page'] ==  "เบิกสินค้า" || $_GET['page'] == "withdrawreport")
+                                echo "<li class='active'>";
+                            else
+                                echo "<li>";
+                        ?>
+                            <a href="index.php?page=managewithdraw">เบิกสินค้า</a>
                         </li>
 						<li>
                             <a href="index.php?page=logout" onClick="return confirm('คุณต้องการออกจากระบบหรือไม่ ?')">ออกจากระบบ</a>
@@ -180,6 +189,17 @@
                                                    include 'managereceive.php';
                                                    else if($_GET['page'] == "รับสินค้า" || $_GET['page'] == "ยืนยันการรับสินค้า")
                                                    include 'receiveproduct.php';
+                                                   else if($_GET['page'] == "managewithdraw")
+                                                   include 'managewithdraw.php';
+                                                   else if($_GET['page'] == "เบิกสินค้า")
+                                                   include 'withdraw.php';
+                                                   else if($_GET['page'] == "รายละเอียดการเบิกสินค้า")
+                                                   include 'showwithdraw.php';
+                                                   else if($_GET['page'] == "รายการสินค้าที่เลือก" || $_GET['page'] == "รายการสินค้าที่เลือก" || $_GET['page'] == "ยืนยันการเบิกสินค้า")
+                                                   include 'selectwidthdraw.php';
+                                                   else if($_GET['page'] == "withdrawreport")
+                                                   include 'report.php';
+                                                   
                                                    else if($_GET['page'] == "logout")
                                                         logout();
                                                         

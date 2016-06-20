@@ -25,7 +25,7 @@
                 
                 ?>
             </table>
-            <input class="btn" type="submit" name="page" value="ย้อนกลับ">
+            <input class="btn" type="submit" name="page" value="ย้อนกลับ" onClick="history.back()" >
             </form>
             
         </div>

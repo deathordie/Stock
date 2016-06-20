@@ -1,6 +1,6 @@
 <?php
     if(isset($_GET['page']) && $_GET['warranty'] != '' && $_GET['modelid'] != '' && $_GET['id'] != ''){
-        editproduct($_GET['id'],$_GET['supplierid'],$_GET['modelid'],$_GET['categoryid'],$_GET['warranty'],$_GET['warrantytype']);
+        editproduct($_GET['id'],$_GET['supplierid'],$_GET['modelid'],$_GET['categoryid'],$_GET['warranty'],$_GET['warrantytype'],$_GET['pointorder']);
         
 	}
 ?>
@@ -22,7 +22,7 @@
             <table class="table">
 			<?php
                             
-				$result = select("select * from product a,brand b, model c ,supplier d where a.model_id = c.model_id and c.brand_id = b.brand_id and a.supplier_id = d.supplier_id and a.prod_id = ".$_SESSION['tmp']." order by a.prod_id");
+				$result = select("select * from product a,brand b, model c ,supplier d where a.model_id = c.model_id and a.brand_id = b.brand_id and a.supplier_id = d.supplier_id and a.prod_id = ".$_GET['id']." order by a.prod_id");
 				foreach ($result as $data ) {
 					echo "<tr><td><label>รหัสสินค้า</label></td><td><input type='text' name='id' value='".$data['prod_id']."' readonly /></td></tr>";
 					echo "<tr><td><label>ผู้จัดจำหน่าย</label></td><td><select name='supplierid'>";
@@ -54,7 +54,7 @@
                                         echo "</select></td></tr>";
                                         }
                                         else{
-                                        $result1 = view("select * from model a, brand b where a.brand_id = b.brand_id order by model_id asc");
+                                        $result1 = view("select * from model order by model_id asc");
 					foreach ($result1 as $data1 ) {
 						if($data['model_id'] == $data1['model_id'])
 							echo "<option value=".$data1['model_id']." selected>".$data1['model_name']."</option>";
@@ -93,7 +93,7 @@
                                             else
                                                  echo "<option value=4 >Lifetime</option>";
                                         echo "</td></tr>";
-					
+					echo "<tr><td><label>จุดสั่งซื้อ</label></td><td><input type ='text' name='pointorder' value='".$data['pointorder']."'></td></tr>";
                 }                             
                 
                     unset($_SESSION['tmp']);

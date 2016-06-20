@@ -29,7 +29,7 @@
                 
                 ?>
             </table>
-            <input class="btn" type="submit" name="page" value="สั่งซื้อสินค้า">
+            
             </form>
             
         </div>
