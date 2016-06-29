@@ -16,7 +16,7 @@
             <table class="table">
                 <tr><td>ลำดับ</td><td>ชื่อยี่ห้อ</td><td>เครื่องมือ</td></tr>
                 <?php
-                $result = view("select * from brand order by brand_id asc");
+                $result = view("select * from brand order by brand_name asc");
 				$i =1;
                 foreach ($result as $data ) {
                     echo "<tr><td>".$i."</td><td>".$data['brand_name']."</td><td><a href='index.php?page=แก้ไขข้อมูลยี่ห้อ&id=".$data['brand_id']."   '>แก้ไข</a></td></tr>";

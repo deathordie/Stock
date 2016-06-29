@@ -16,7 +16,7 @@
             <table class="table">
                 <tr><td>ลำดับ</td><td>รหัสรุ่น</td><td>ชื่อรุ่น</td><td>เครื่องมือ</td></tr>
                 <?php
-                $result = view("select * from model order by model_id asc");
+                $result = view("select * from model order by model_name asc");
 				$i =1;
                 foreach ($result as $data ) {
                     echo "<tr><td>".$i."</td><td>".$data['model_id']."</td><td>".$data['model_name']."</td><td><a href='index.php?page=แก้ไขข้อมูลรุ่น&id=".$data['model_id']."   '>แก้ไข</a></td></tr>";

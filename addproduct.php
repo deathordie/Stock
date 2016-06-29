@@ -39,7 +39,7 @@
 													</select></td></tr>
                 <tr><td><label>ยี่ห้อ</label></td><td><select name='brandid' >
 														<?php
-														$result = view("select * from brand order by brand_id");
+														$result = view("select * from brand order by brand_name asc");
 														foreach ($result as $data ) {
                                                                                                                         if($_GET['brandid'] == $data['brand_id'])
                                                                                                                             echo "<option value=".$data['brand_id']." selected>".$data['brand_name']."</option>";
@@ -51,7 +51,7 @@
                 <tr><td><label>รุ่น</label></td><td><select name='modelid' >
 														<?php
                                                                                                                
-                                                                                                                    $result = view("select * from model order by model_id");
+                                                                                                                    $result = view("select * from model order by model_name asc");
                                                                                                                     foreach ($result as $data ) {
 															echo "<option value=".$data['model_id'].">".$data['model_name']."</option>";
                    										}
@@ -60,7 +60,7 @@
 													</select></td></tr>
                 <tr><td><label>หมวดหมู่</label></td><td><select name='categoryid' >
 														<?php
-														$result = view("select * from category order by category_id");
+														$result = view("select * from category order by category_name asc");
 														foreach ($result as $data ) {
                                                                                                                     echo "<option value=".$data['category_id'].">".$data['category_name']."</option>";
                                                                                                                 }

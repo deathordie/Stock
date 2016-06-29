@@ -1,6 +1,6 @@
 <?php
     if(isset($_GET['page']) && $_GET['warranty'] != '' && $_GET['modelid'] != '' && $_GET['id'] != ''){
-        editproduct($_GET['id'],$_GET['supplierid'],$_GET['modelid'],$_GET['categoryid'],$_GET['warranty'],$_GET['warrantytype'],$_GET['pointorder']);
+        editproduct($_GET['id'],$_GET['supplierid'],$_GET['modelid'],$_GET['categoryid'],$_GET['warranty'],$_GET['warrantytype'],$_GET['pointorder'],$_GET['brandid']);
         
 	}
 ?>
@@ -34,7 +34,7 @@
 							echo "<option value=".$data1['supplier_id']." >".$data1['supplier_name']."</option>";
                    								}
 					echo "</select></td></tr>";
-                    echo "<tr><td><label>ยี่ห้อ</label></td><td><select name='brandid' onchange=window.location='index.php?page=แก้ไขข้อมูลสินค้า&brandid='+this.value>";
+                    echo "<tr><td><label>ยี่ห้อ</label></td><td><select name='brandid' >";
                                         $result1 = view("select * from brand order by brand_id asc");
 					foreach ($result1 as $data1 ) {
 						if($data['brand_id'] == $data1['brand_id'])

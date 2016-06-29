@@ -96,6 +96,13 @@
                         ?>
                             <a href="index.php?page=managereceive">รับสินค้า</a>
                         </li>
+                        <?php 
+                            if($_GET['page'] == 'receiveoldproduct')
+                                echo "<li class='active'>";
+                            else
+                                echo "<li>";
+                        ?>
+                            <a href="index.php?page=receiveoldproduct">รับสินค้า (ที่ไม่อยู่ในสต็อค)</a>
                         </li>
                         <?php 
                             if($_GET['page'] == 'managewithdraw' || $_GET['page'] ==  "รายการสินค้าที่เลือก" || $_GET['page'] ==  "เบิกสินค้า" || $_GET['page'] == "withdrawreport")
@@ -104,6 +111,22 @@
                                 echo "<li>";
                         ?>
                             <a href="index.php?page=managewithdraw">เบิกสินค้า</a>
+                        </li>
+                        <?php 
+                            if($_GET['page'] == 'revertproduct' || $_GET['page'] == 'รายการสินค้าที่คืน')
+                                echo "<li class='active'>";
+                            else
+                                echo "<li>";
+                        ?>
+                            <a href="index.php?page=revertproduct">คืนสินค้า</a>
+                        </li>
+                        <?php 
+                            if($_GET['page'] == 'managereport')
+                                echo "<li class='active'>";
+                            else
+                                echo "<li>";
+                        ?>
+                            <a href="index.php?page=managereport">ออกรายงาน</a>
                         </li>
 						<li>
                             <a href="index.php?page=logout" onClick="return confirm('คุณต้องการออกจากระบบหรือไม่ ?')">ออกจากระบบ</a>
@@ -175,7 +198,7 @@
 								$_SESSION['tmp'] = $_GET['id'];
 								include 'editproduct.php';
 						   }
-                                                   else if($_GET['page'] == "manageorder" || $_GET['page'] == "ย้อนกลับ")   
+                                                   else if($_GET['page'] == "manageorder")   
                                include 'manageorder.php';
                                                    else if($_GET['page'] == "แสดงรายละเอียดการสั่งซื้อ")   
                                include 'showorder.php';
@@ -199,7 +222,14 @@
                                                    include 'selectwidthdraw.php';
                                                    else if($_GET['page'] == "withdrawreport")
                                                    include 'report.php';
-                                                   
+                                                   else if($_GET['page'] == "managereport")
+                                                   include 'managereport.php';
+                                                   else if($_GET['page'] == "receiveoldproduct" || $_GET['page'] == "เพิ่ม")
+                                                   include 'receiveoldproduct.php';
+                                                   else if($_GET['page'] == "revertproduct")
+                                                   include 'returnproduct.php';
+                                                   else if($_GET['page'] == "รายการสินค้าที่คืน" || $_GET['page'] == "ยืนยันการคืนสินค้า")
+                                                   include 'selectreturn.php';
                                                    else if($_GET['page'] == "logout")
                                                         logout();
                                                         

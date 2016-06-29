@@ -19,15 +19,15 @@
         <div class="container-fluid" style="text-align:center">
             
             <form class="form-signin" align="center" action="">
-            <h2>รายการสินค้า</h2>
+            <h2>รายการเบิกสินค้า</h2>
             <table class="table">
-                <tr><td>ลำดับ</td><td>รหัสการเบิก</td><td>ผู้เบิก</td><td>วันที่เบิก</td><td>เครื่องมือ</td></tr>
+                <tr><td>ลำดับ</td><td>รหัสการเบิก</td><td>ผู้เบิก</td><td>วันที่เบิก</td><td>หมายเหตุ</td><td>เครื่องมือ</td></tr>
                 <?php
                 $result = view("select * from withdraw a,employee b where a.emp_id = b.emp_id order by withdraw_id");
 				
                 $i =1;
                 foreach ($result as $data ) {
-                    echo "<tr><td>".$i."</td><td><a href='index.php?page=รายละเอียดการเบิกสินค้า&id=".$data['withdraw_id']." '>".$data['withdraw_id'].'</a></td><td>'.$data['emp_fname'].'</td><td> '.$data['withdraw_date']."</td><td><a href='report.php?id=".$data['withdraw_id']." ' target='_blank'>พิมพ์เอกสาร</a></td></tr>";
+                    echo "<tr><td>".$i."</td><td><a href='index.php?page=รายละเอียดการเบิกสินค้า&id=".$data['withdraw_id']." '>".$data['withdraw_id'].'</a></td><td>'.$data['emp_fname'].'</td><td> '.$data['withdraw_date']."</td><td>".$data['detail']."</td><td><a href='report.php?id=".$data['withdraw_id']." ' target='_blank'>พิมพ์เอกสาร</a></td></tr>";
                     
                     $i++;
                 }

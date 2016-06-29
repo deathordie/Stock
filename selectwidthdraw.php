@@ -20,14 +20,17 @@
             <form class="form-signin" align="center" action="index.php">
             <h2>รายการสินค้าที่ต้องการเบิก</h2>
             <table class="table">
-                <tr><td>ลำดับ</td><td>ยี่ห้อ</td><td>รุ่น</td><td>จำนวน</td><td>เครื่องมือ</td></tr>
+                <tr><td>ลำดับ</td><td>ผู้จัดจำหน่าย</td><td>ยี่ห้อ</td><td>รุ่น</td><td>จำนวน</td><td>เครื่องมือ</td></tr>
                 <?php
                     viewwithdrawn();
                 
                 
                 ?>
+                <tr><td align="center" colspan="5">ผู้เบิก<input type="texr" name="withdrawname"></textarea></td></tr>
+                <tr><td align="center" colspan="5">หมายเหตุ<textarea name="txt" rows="3" cols="50"></textarea></td></tr>
+                
             </table>
-            <input class="btn" type="submit" name="page" value="ย้อนกลับ"> <input class="btn" type="submit" name="page" value="ยืนยันการเบิกสินค้า">
+            <input class="btn" type="submit" name="page" value="ย้อนกลับ" onClick="history.back()"> <input class="btn" type="submit" name="page" value="ยืนยันการเบิกสินค้า">
             </form>
             
         </div>

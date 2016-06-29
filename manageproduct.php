@@ -16,7 +16,7 @@
             <table class="table">
                 <tr><td>ลำดับ</td><td>รหัสสินค้า</td><td>ผู้จัดจำหน่าย</td><td>ยี่ห้อ</td><td>รุ่น</td><td>หมวดหมู่</td><td>จำนวนคงเหลือ</td><td>ประกัน</td><td>หน่วย (ประกัน)</td><td>จุดสั่งซื้อ</td><td>เครื่องมือ</td></tr>
                 <?php
-                $result = view("select * from product a,brand b,model c,category d,supplier e where a.supplier_id = e.supplier_id and a.category_id = d.category_id and a.model_id = c.model_id and a.brand_id = b.brand_id order by a.prod_id asc");
+                $result = view("select * from product a,brand b,model c,category d,supplier e where a.supplier_id = e.supplier_id and a.category_id = d.category_id and a.model_id = c.model_id and a.brand_id = b.brand_id order by b.brand_name asc");
 				$i =1;
                 foreach ($result as $data ) {
                     echo "<tr><td>".$i."</td><td>".$data['prod_id']."</td><td>".$data['supplier_name']."</td><td>".$data['brand_name']."</td><td>".$data['model_name']."</td><td>".$data['category_name']."</td><td>".$data['amount']."</td><td>".$data['warranty']."</td>";
