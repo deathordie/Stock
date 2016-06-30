@@ -1,3 +1,10 @@
+<?php
+    if(!isset($_GET['num']) || $_GET['num'] == 1)
+        $start = 0;
+    else if ($_GET['num'] != 1)
+        $start = ((10*$_GET['num'])) - 10;
+       
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +23,7 @@
             <table class="table">
                 <tr><td>ลำดับ</td><td>ชื่อ</td><td>นามสกุล</td><td>ชื่อผู้ใช้</td><td>เครื่องมือ</td></tr>
                 <?php
-                $result = view("select * from employee order by emp_id asc");
+                $result = view("select * from employee order by emp_id asc limit ".$start.",10");
 				$i =1;
                 foreach ($result as $data ) {
                     echo "<tr><td>".$i."</td><td>".$data['emp_fname']."</td><td>".$data['emp_lname']."</td><td>".$data['emp_username']."</td><td><a href='index.php?page=แก้ไขข้อมูลพนักงาน&id=".$data['emp_id']."   '>แก้ไข</a></td></tr>";
@@ -24,6 +31,20 @@
                 }
                 
                 ?>
+                <tr><td colspan=5>หน้า<select name=num onchange="window.location = 'index.php?page=manageuser&num=' + this.value">
+                                              
+                <?php
+                    $result = view("select * from employee");
+                    $num = count($result);
+                    $num = ceil($num/10);
+                    for($i=1;$i<=$num;$i++){
+                        if($_GET['num'] == $i)
+                            echo "<option value=".$i." selected>$i</option>";
+                        else
+                            echo "<option value=".$i." >$i</option>";
+                }
+                ?>
+                            </select></td></tr>
             </table>
             <input class="btn" type="submit" name="page" value="เพิ่มข้อมูลพนักงาน">
             </form>

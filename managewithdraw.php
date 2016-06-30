@@ -1,8 +1,13 @@
 <?php
+    if(!isset($_GET['num']) || $_GET['num'] == 1)
+        $start = 0;
+    else if ($_GET['num'] != 1)
+        $start = ((10*$_GET['num'])) - 10;
    if(isset($_GET['id']))
        selectitem($_GET['id']);
    if(isset($_GET['search']))
        echo "OK";
+   
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +28,7 @@
             <table class="table">
                 <tr><td>ลำดับ</td><td>รหัสการเบิก</td><td>ผู้เบิก</td><td>วันที่เบิก</td><td>หมายเหตุ</td><td>เครื่องมือ</td></tr>
                 <?php
-                $result = view("select * from withdraw a,employee b where a.emp_id = b.emp_id order by withdraw_id");
+                $result = view("select * from withdraw a,employee b where a.emp_id = b.emp_id order by withdraw_id limit ".$start.",10");
 				
                 $i =1;
                 foreach ($result as $data ) {
@@ -33,6 +38,20 @@
                 }
                 
                 ?>
+                <tr><td colspan=11>หน้า<select name=num onchange="window.location = 'index.php?page=managereceive&num=' + this.value">
+                                              
+                <?php
+                    $result = view("select * from withdraw");
+                    $num = count($result);
+                    $num = ceil($num/10);
+                    for($i=1;$i<=$num;$i++){
+                        if($_GET['num'] == $i)
+                            echo "<option value=".$i." selected>$i</option>";
+                        else
+                            echo "<option value=".$i." >$i</option>";
+                }
+                ?>
+                </select></td></tr>
             </table>
             <input class="btn" type="submit" name="page" value="เบิกสินค้า">
             </form>

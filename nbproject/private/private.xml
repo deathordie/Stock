@@ -3,14 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/AppServ/www/Stock/returnproduct.php</file>
-            <file>file:/C:/AppServ/www/Stock/withdraw.php</file>
             <file>file:/C:/AppServ/www/Stock/receiveoldproduct.php</file>
             <file>file:/C:/AppServ/www/Stock/index.php</file>
-            <file>file:/C:/AppServ/www/Stock/orderproduct.php</file>
-            <file>file:/C:/AppServ/www/Stock/manageproduct.php</file>
+            <file>file:/C:/AppServ/www/Stock/managereturn.php</file>
             <file>file:/C:/AppServ/www/Stock/function.php</file>
-            <file>file:/C:/AppServ/www/Stock/report.php</file>
         </group>
     </open-files>
 </project-private>

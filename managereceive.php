@@ -1,3 +1,10 @@
+<?php
+    if(!isset($_GET['num']) || $_GET['num'] == 1)
+        $start = 0;
+    else if ($_GET['num'] != 1)
+        $start = ((10*$_GET['num'])) - 10;
+    
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +23,7 @@
             <table class="table">
                 <tr><td>ลำดับ</td><td>รหัสการสั่งซื้อสินค้า</td><td>สถานะ</td><td>วันที่รับสินค้า</td><td>เครื่องมือ</td></tr>
                 <?php
-                $result = view("select a.order_id,b.order_id as ordid,b.receive_date from orders a LEFT JOIN receive b on a.order_id = b.order_id order by a.order_id asc");
+                $result = view("select a.order_id,b.order_id as ordid,b.receive_date from orders a LEFT JOIN receive b on a.order_id = b.order_id order by a.order_id asc limit ".$start.",10 ");
 				$i =1;
                 foreach ($result as $data ) {
                     echo "<tr><td>".$i."</td><td>".$data['order_id']."</td>";
@@ -29,6 +36,20 @@
                 }
                 
                 ?>
+                <tr><td colspan=11>หน้า<select name=num onchange="window.location = 'index.php?page=managereceive&num=' + this.value">
+                                              
+                <?php
+                    $result = view("select * from receive");
+                    $num = count($result);
+                    $num = ceil($num/10);
+                    for($i=1;$i<=$num;$i++){
+                        if($_GET['num'] == $i)
+                            echo "<option value=".$i." selected>$i</option>";
+                        else
+                            echo "<option value=".$i." >$i</option>";
+                }
+                ?>
+                </select></td></tr>
             </table>
             
             </form>

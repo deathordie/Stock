@@ -113,7 +113,7 @@
                             <a href="index.php?page=managewithdraw">เบิกสินค้า</a>
                         </li>
                         <?php 
-                            if($_GET['page'] == 'revertproduct' || $_GET['page'] == 'รายการสินค้าที่คืน')
+                            if($_GET['page'] == 'revertproduct' || $_GET['page'] == 'รายการสินค้าที่คืน' || $_GET['page'] == 'คืนสินค้า')
                                 echo "<li class='active'>";
                             else
                                 echo "<li>";
@@ -226,8 +226,14 @@
                                                    include 'managereport.php';
                                                    else if($_GET['page'] == "receiveoldproduct" || $_GET['page'] == "เพิ่ม")
                                                    include 'receiveoldproduct.php';
-                                                   else if($_GET['page'] == "revertproduct")
+                                                   else if($_GET['page'] == "คืนสินค้า")
                                                    include 'returnproduct.php';
+                                                   else if($_GET['page'] == "เบิกสินค้า")
+                                                   include 'returnproduct.php';
+                                                   else if($_GET['page'] == "revertproduct")
+                                                   include 'managereturn.php';
+                                                   else if($_GET['page'] == "รายละเอียดการคืนสินค้า")
+                                                   include 'showreturn.php';
                                                    else if($_GET['page'] == "รายการสินค้าที่คืน" || $_GET['page'] == "ยืนยันการคืนสินค้า")
                                                    include 'selectreturn.php';
                                                    else if($_GET['page'] == "logout")

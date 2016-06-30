@@ -3,7 +3,11 @@
         $start = 0;
     else if ($_GET['num'] != 1)
         $start = ((10*$_GET['num'])) - 10;
-    
+   if(isset($_GET['id']))
+       selectitem($_GET['id']);
+   if(isset($_GET['search']))
+       echo "OK";
+   
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,28 +17,31 @@
 <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
-<title>Manage Supplier</title>
+<title>Manage Product</title>
     <body>
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
         <div class="container-fluid" style="text-align:center">
-            <form class="form-signin" align="center" action="index.php">
-            <h2>รายชื่อผู้จัดจำหน่าย</h2>
+            
+            <form class="form-signin" align="center" action="">
+            <h2>รายการเบิกสินค้า</h2>
             <table class="table">
-                <tr><td>ลำดับ</td><td>รหัสผู้จัดจำหน่าย</td><td>ชื่อผู้จัดจำหน่าย</td><td>เครื่องมือ</td></tr>
+                <tr><td>ลำดับ</td><td>รหัสการคืน</td><td>ผู้รับสินค้า</td><td>วันที่คืน</td></tr>
                 <?php
-                $result = view("select * from supplier order by supplier_id asc limit ".$start.",10");
-				$i =1;
+                $result = view("select * from returnproduct a,employee b where a.emp_id = b.emp_id order by return_id limit ".$start.",10");
+				
+                $i =1;
                 foreach ($result as $data ) {
-                    echo "<tr><td>".$i."</td><td>".$data['supplier_id']."</td><td>".$data['supplier_name']."</td><td><a href='index.php?page=แก้ไขข้อมูลผู้จัดจำหน่าย&id=".$data['supplier_id']."   '>แก้ไข</a></td></tr>";
+                    echo "<tr><td>".$i."</td><td><a href='index.php?page=รายละเอียดการคืนสินค้า&id=".$data['return_id']." '>".$data['return_id'].'</a></td><td>'.$data['emp_fname'].'</td><td> '.$data['return_date']."</td></tr>";
+                    
                     $i++;
                 }
                 
                 ?>
-                <tr><td colspan=4>หน้า<select name=num onchange="window.location = 'index.php?page=managesupplier&num=' + this.value">
+                <tr><td colspan=11>หน้า<select name=num onchange="window.location = 'index.php?page=managereceive&num=' + this.value">
                                               
                 <?php
-                    $result = view("select * from supplier");
+                    $result = view("select * from returnproduct");
                     $num = count($result);
                     $num = ceil($num/10);
                     for($i=1;$i<=$num;$i++){
@@ -46,7 +53,7 @@
                 ?>
                 </select></td></tr>
             </table>
-            <input class="btn" type="submit" name="page" value="เพิ่มข้อมูลผู้จัดจำหน่าย">
+            <input class="btn" type="submit" name="page" value="คืนสินค้า">
             </form>
             
         </div>
